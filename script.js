@@ -1,9 +1,21 @@
+//Initialize variables
 var running = false;
 var interval;
 var decimal = 0;
 var sec = 0;
 var min = 0;
 var cs = 0;
+var worst = 0;
+var numSolves = 0;
+var total = 0;
+var best = 999999999999999999;
+var timesDisplay = []
+var csTimes =[]
+var avAll = 0;
+// Grab all the HTML elements
+var avAllOut = document.getElementById("overallAv");
+var bestOut = document.getElementById("fastest");
+var numSolvesOut = document.getElementById("solveNum");
 var decimalOut = document.getElementById("decimal");
 var secOut = document.getElementById("sec");
 var minOut = document.getElementById("min");
@@ -11,18 +23,10 @@ var colon = document.getElementById("colon");
 var timesOut = document.getElementById("timeOut");
 var timesList = document.getElementById("timeList");
 var clearAll = document.getElementById("clear");
-var timesDisplay = []
-var csTimes =[]
-var avAll = 0;
-var avAllOut = document.getElementById("overallAv");
-var best = 999999999999999999;
-var bestOut = document.getElementById("fastest");
-var worst = 0;
-var numSolves = 0;
-var total = 0;
-var numSolvesOut = document.getElementById("solveNum");
+//Generate scramble --> GO TO generateScramble()
 generateScramble();
 
+//THIS IS THE TIMER
 function timer() {
   decimal++;
   cs++; //counts time in centiseconds
@@ -49,8 +53,7 @@ function timer() {
   }
 
 }
-window.onkeyup = run;
-
+window.onkeyup = run; //GO TO RUN --> run()
 function run() {
   if (!running) {
     decimal = 0;
@@ -70,10 +73,11 @@ function run() {
     timesDisplay.push(" " + timesOut.innerHTML);
     csTimes.push(cs);
     timesList.innerHTML = timesDisplay;
-    calculateStats();
+    calculateStats(); //GO TO CALCULATE STATS --> calculateStats()
   }
 }
 
+//THIS WILL GENERATE THE SCRAMBLE
 function generateScramble() {
   var move; //includes face to turn and how to turn it. Ex. 2F
   var face; //Face to turn. Either R, L, F, B, U, or D
@@ -84,7 +88,7 @@ function generateScramble() {
   var output = document.getElementById("scram");
   for (var x = 0; x < 25; x++) {
     do {
-      faceNum = Math.floor(Math.random() * 6) + 1;
+      faceNum = Math.floor(Math.random() * 6) + 1; //Random number between 1 and 6
     } while (faceNum === lastFaceNum); //the same face can't appear in consecutive moves.
     lastFaceNum = faceNum;
     if (faceNum === 1) {
@@ -105,7 +109,7 @@ function generateScramble() {
     if (faceNum === 6) {
       face = "B";
     }
-    turn = Math.floor(Math.random() * 3) + 1;
+    turn = Math.floor(Math.random() * 3) + 1; //Generate number between 1-3
     if (turn === 1) {
       move = face;
     }
@@ -120,9 +124,10 @@ function generateScramble() {
   }
   output.innerHTML = scramble;
 }
-clearAll.onclick = clearTimes;
+clearAll.onclick = clearTimes; //THIS WILL DO THE CLEAR ALL FUNCTION
 
 function clearTimes() {
+  // But every variable back to it's default value
   numSolves = 0;
   numSolvesOut.innerHTML = "Solves: " + numSolves;
   best = 99999999999;
@@ -140,6 +145,7 @@ function clearTimes() {
 
 //CALCULATE YOUR STATS
 function calculateStats() {
+  //Add one to the number of solves
   numSolves++;
   total = 0;
   numSolvesOut.innerHTML = "Solves: " + numSolves;
@@ -153,7 +159,7 @@ function calculateStats() {
     total += csTimes[x];
   }
   avAll = total / numSolves;
-  avAllOut.innerHTML = "Average: " + formatTime(avAll);
+  avAllOut.innerHTML = "Average: " + formatTime(avAll); //GO TO FORMATE TIME --> formatTime()
   bestOut.innerHTML = "Best: " + formatTime(best);
 }
 
